@@ -1,0 +1,259 @@
+COREbaba21#show run
+Building configuration...
+
+Current configuration : 5442 bytes
+!
+! Last configuration change at 00:18:18 UTC Mon Mar 1 1993
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname COREbaba21
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+enable secret 5 $1$WgBc$JXPOEDUgBLe.etCZwzB6g/
+!
+username admin privilege 15 secret 5 $1$1weT$sC8HM6m8/VVzNTxnl8XwZ.
+username engel privilege 15 secret 5 $1$Zod7$RFHvQvyUv2zoZmKCwIO1n.
+no aaa new-model
+system mtu routing 1500
+ip routing
+no ip domain-lookup
+!
+ip dhcp excluded-address 10.21.1.1 10.21.1.100
+ip dhcp excluded-address 10.21.10.1 10.21.10.100
+ip dhcp excluded-address 10.21.50.1 10.21.50.100
+ip dhcp excluded-address 10.21.100.1 10.21.100.100
+ip dhcp excluded-address 10.0.2.1 10.0.2.120
+ip dhcp excluded-address 10.0.1.1 10.0.2.120
+ip dhcp excluded-address 10.0.1.1 10.0.1.120
+ip dhcp excluded-address 10.0.64.1 10.0.64.120
+!
+ip dhcp pool MGMTDATA
+ network 10.21.1.0 255.255.255.0
+ default-router 10.21.1.4 
+ domain-name MGMTDATA.COM
+ dns-server 10.21.1.10 
+!
+ip dhcp pool WIFIDATA
+ network 10.21.10.0 255.255.255.0
+ default-router 10.21.10.4 
+ domain-name WIFIDATA.COM
+ dns-server 10.21.1.10 
+!
+ip dhcp pool IPCCTV
+ network 10.21.50.0 255.255.255.0
+ default-router 10.21.50.4 
+ domain-name IPCCTV.COM
+ dns-server 10.21.1.10 
+!
+ip dhcp pool VOICEVLAN
+ network 10.21.100.0 255.255.255.0
+ default-router 10.21.100.4 
+ domain-name VOICEVLAN.COM
+ dns-server 10.21.1.10 
+ option 150 ip 10.21.100.8 
+!
+ip dhcp pool CAMERA6
+ host 10.21.50.6 255.255.255.0
+ client-identifier 001a.0704.7f64
+!
+ip dhcp pool CAMERA8
+ host 10.21.50.8 255.255.255.0
+ client-identifier 001a.0709.c252
+!         
+ip dhcp pool PEOPELSOFT.com
+ network 10.0.2.0 255.255.254.0
+ default-router 10.0.2.1 
+ domain-name PEOPELSOFT.com
+ dns-server 10.21.1.10 
+ option 150 ip 10.21.100.8 
+!         
+ip dhcp pool PNP.GOV.PH
+ network 10.0.1.0 255.255.255.0
+ default-router 10.0.1.1 
+ domain-name PNP.GOV.PH
+ dns-server 10.21.1.10 
+ option 150 ip 10.21.100.8 
+!         
+ip dhcp pool COCACOLA.COM
+ network 10.0.64.0 255.255.192.0
+ default-router 10.0.64.1 
+ domain-name COCACOLA.COM
+ dns-server 10.21.1.10 
+ option 150 ip 10.21.100.8 
+!         
+!         
+!         
+!         
+crypto pki trustpoint TP-self-signed-890118528
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-890118528
+ revocation-check none
+ rsakeypair TP-self-signed-890118528
+!         
+!         
+crypto pki certificate chain TP-self-signed-890118528
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 38393031 31383532 38301E17 0D393330 33303130 30303131 
+  385A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3839 30313138 
+  35323830 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  BD0A3664 41878D91 96E53222 C89BE5DE D392CAB1 0F421649 E7E54F9C D08716FA 
+  0F5743EA 8CF6E602 9C76B4CC 13CBFCCD 9C654803 C3C05AB6 9A1898B5 D8055178 
+  7613A28D 167357A8 A533E8FD D30EE105 81C60CCD 08BA82FF C085BAFF B0842FDC 
+  1F09AB3C 76A6D1AB 4E5BB7EB 6F5C85FF 2D611661 2B3A9D41 18772648 82F62A9F 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 16801458 AC12DC85 CFD32C80 C3016479 C95BECCC 80C9CC30 1D060355 
+  1D0E0416 041458AC 12DC85CF D32C80C3 016479C9 5BECCC80 C9CC300D 06092A86 
+  4886F70D 01010505 00038181 005B1BC2 2959E74B 2A2B8B59 48BD343E ADA51043 
+  9B6946FB 0EDE6ACC 8229FBD7 20839CF3 420CFBF3 C7260E45 E2990BED 14FBAA51 
+  11AF9E9F 40079351 F3ED04AB B4558F09 9D59F486 F08249E2 85EEC579 5EE8D556 
+  1FAE5D58 88C3F0DC A40B9F15 EC5DB374 B2DF1E21 B0B5E742 A89E3D1E 3620C07C 
+  5B0C7255 4BBD168B 8CBC354D 3E
+        quit
+!         
+!         
+!         
+!         
+!         
+spanning-tree mode pvst
+spanning-tree extend system-id
+!         
+vlan internal allocation policy ascending
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface FastEthernet0/1
+!         
+interface FastEthernet0/2
+ switchport access vlan 10
+ switchport mode access
+!         
+interface FastEthernet0/3
+ switchport access vlan 100
+ switchport mode access
+!         
+interface FastEthernet0/4
+ switchport access vlan 10
+ switchport mode access
+!         
+interface FastEthernet0/5
+ switchport mode access
+ switchport voice vlan 100
+ mls qos trust device cisco-phone
+ spanning-tree portfast
+!         
+interface FastEthernet0/6
+ switchport access vlan 50
+ switchport mode access
+!         
+interface FastEthernet0/7
+ switchport mode access
+ switchport voice vlan 100
+ mls qos trust device cisco-phone
+ spanning-tree portfast
+!         
+interface FastEthernet0/8
+ switchport access vlan 50
+ switchport mode access
+!         
+interface FastEthernet0/9
+!         
+interface FastEthernet0/10
+!         
+interface FastEthernet0/11
+!         
+interface FastEthernet0/12
+!         
+interface GigabitEthernet0/1
+ no switchport
+ ip address 10.21.21.4 255.255.255.0
+!         
+interface Vlan1
+ description MGMTDATA
+ ip address 10.21.1.4 255.255.255.0
+!         
+interface Vlan10
+ description WIRELESS
+ ip address 10.21.10.4 255.255.255.0
+!         
+interface Vlan25
+ ip address 10.0.64.1 255.255.192.0
+!         
+interface Vlan50
+ description IPCCTV
+ ip address 10.21.50.4 255.255.255.0
+!         
+interface Vlan100
+ description VOICEVLAN
+ ip address 10.21.100.4 255.255.255.0
+!         
+ip http server
+ip http secure-server
+!         
+!         
+ip route 0.0.0.0 0.0.0.0 10.21.21.1
+!         
+!         
+!         
+!         
+line con 0
+ exec-timeout 0 0
+ password 7 095C4F1A0A
+ login    
+line vty 0 4
+ exec-timeout 0 0
+ password 7 140713181F
+ login    
+line vty 5 14
+ exec-timeout 0 0
+ password 7 140713181F
+ login    
+line vty 15
+ login    
+!         
+end       
+          
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#
+COREbaba21#

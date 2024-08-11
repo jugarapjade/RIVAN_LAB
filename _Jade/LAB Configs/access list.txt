@@ -1,0 +1,374 @@
+Create a packet filter firewall acl to block other table use standard ACL 1-99
+
+@edge block other column but allow your own
+Config t
+no access-lits 1
+access-list 1 deny 10.12.0.0 0.0.255.255 log
+access-list 1 deny 10.22.0.0 0.0.255.255 log
+access-list 1 deny 10.32.0.0 0.0.255.255 log
+access-list 1 Permit Any
+interface gi 0/0/1
+ ip access-group 1 in
+end
+Version 2: Use name 
+
+Config t
+no IP access-list STANDARD BAWALSILA2
+IP access-list STANDARD BAWALSILA2
+access-list 1 deny 10.22.0 0.0.255.255 log
+access-list 1 deny 10.41.0.0 0.0.255.255 log
+access-list 1 deny 10.32.0.0 0.0.255.255 log
+Permit Any
+interface gi 0/0/1
+ ip access-group BAWALSILA2
+end
+
+LAB2:
+Config t
+no IP access-list STANDARD BAWALSILA2
+IP access-list STANDARD BAWALSILA2
+deny 10.22.0 0.0.255.255 log
+deny 10.41.0.0 0.0.255.255 log
+deny 10.32.0.0 0.0.255.255 log
+Permit Any
+interface gi 0/0/1
+ ip access-group BAWALSILA2 in
+end
+
+LAB 3:
+
+Config t
+no access-lits 3
+access-list 3 deny 10.41.0.0 0.0.255.255 log
+deny any
+interface gi 0/0/1
+ ip access-group 3 in
+end
+
+
+@allow only your row use the power of any 
+Config t
+no IP access-list STANDARD KAMILANG1
+IP access-list STANDARD KAMILANG1
+Permit 10.22.0.0 0.0.255.255 log
+Permit Any
+interface gi 0/0/1
+ ip access-group KAMILANG in
+
+end
+
+Task 4:
+Give internet and DNS TO CISCO ROUTER
+
+
+Conf t 
+ip route  0.0.0.0 0.0.0.0 200.0.0.1
+ip domain-lookup
+ip name-server 1.1.1.1 8.8.8.8 
+end
+ping www.pornhub.com
+
+TASK 5: Block site
+Config t
+no IP access-list STANDARD BAWALPORN
+IP access-list STANDARD BAWALPORN
+permit 66.254.0.0 0.0.255.255 log
+permit104.21.0.0 0.0.255.255 log
+permit 68.235.0.0 0.0.255.255 log
+permit 88.208.29.0 0.0.255.255 log
+Permit Any
+interface gi 0/0/1
+ ip access-group BAWALPORN in
+end
+
+Task 6 : allow porn again
+
+Conf t
+int gig 0/0/1
+no ip access-group accesslist name
+
+taks 7 help brother
+Config t
+no IP access-list STANDARD CUTCLASS
+IP access-list STANDARD CUTCLASS
+deny 104.22.36.0 0.0.255.255 log
+deny 184.168.0.0 0.0.255.255 log
+deny 50.6.0.0 0.0.255.255 log
+deny 172.67.14.0 0.0.255.255 log
+Permit Any
+interface gi 0/0/1
+ ip access-group CUTCLASS in
+end
+
+Task 8: BLOCK 
+
+
+
+task6: How to Make CUCM intentionally hackable to Learn
+the Basics for Firewalls.
+before: nmap -v 10.m.100.8
+@Cucm:
+config t
+int fa0/0
+ no shut
+ ip add 10.21.100.9 255.255.255.0 Secondary
+service finger
+service tcp-small-servers
+service udp-small-servers
+ip dns server
+ip http server
+ip http secure-server
+!Make Ping EASY
+ip host www.web8.com 192.168.103.8
+ip host www.web9.com 192.168.103.9
+ip host pc 10.21.1.10
+ip host cm 10.21.100.8
+ip host cm2 10.21.100.9
+ip host p1 10.21.100.101
+ip host p2 10.21.100.102
+ip host c6 10.21.50.6
+ip host c8 10.21.50.8
+ip host sw 10.21.1.4
+ip host ed 10.21.12.1
+end
+
+================================
+TASK 7: Create your first packet filter
+
+LAB1: You hired as netsec engineer: Your Job
+is to create a policy form cm and cm2
+
+
+========================================================
+Config t
+no IP access-list Extended POLICY1 
+IP access-list Extended  POLICY1 
+Permit tcp any host cm eq 80 log
+Permit tcp any host cm eq 443 log
+Permit tcp any host cm eq 23 log
+Permit tcp any host cm eq 22 log
+Permit tcp any host cm eq 5060 log
+Permit tcp any host cm eq 5061 log
+interface fa0/0
+ ip access-group POLICY1  in
+end
+Remove the POLICY1
+conf t
+int fa0/0
+no ip access-group POLICY1 in
+
+====================================================
+
+================POLICY 2============================
+
+Config t
+no IP access-list Extended POLICY2
+IP access-list Extended  POLICY2 
+Permit tcp any host cm eq 23 log
+Permit tcp any host cm eq 22 log
+Permit tcp any host cm eq 53 log
+Permit tcp any host cm eq 5060 log
+Permit ICMP any host cm2
+Permit tcp any host cm2 eq 80 log
+Permit tcp any host cm2 eq 443 log
+Permit tcp any host cm2 eq 53 log
+interface fa0/0
+ ip access-group POLICY2  in
+end
+===POlicy 3==================================
+Config t
+no IP access-list Extended POLICY3
+IP access-list Extended  POLICY3
+Permit ICMP any host cm
+Permit tcp any host cm eq 22 log
+Permit tcp any host cm eq 53 log
+Permit tcp any host cm eq 80 log
+Permit tcp any host cm2 eq 53 log
+Permit tcp any host cm2 eq 80 log
+Permit tcp any host cm2 eq 443 log
+Permit tcp any host cm2 eq 2000 log
+Permit tcp any host cm2 eq 5060 log
+Permit udp any host cm2 eq 6514 log
+interface fa0/0
+ ip access-group POLICY3  in
+end
+
+conf t
+int fa0/0
+no ip access-group POLICY3 in
+do sh ip access-list POlICY3
+========================CREATE POLICY 4=======================
+Config t
+no IP access-list Extended POLICY4
+IP access-list Extended  POLICY4
+Permit tcp any host cm eq 53 log
+Permit tcp any host cm eq 2000 log
+Permit tcp any host cm eq 22 log
+Permit ICMP any host cm2
+Permit tcp any host cm2 eq 443 log
+interface fa0/0
+ ip access-group POLICY4  in
+end
+
+========================CREATE POLICY 5 =======================
+Config t
+no IP access-list Extended POLICY5
+IP access-list Extended  POLICY5
+Permit ICMP host pc host c1
+Permit tcp host pc host cm eq 22
+Permit tcp host pc host cm eq 23
+Permit ICMP host pc host cm2
+Permit tcp host pc host cm2 eq 80
+Permit tcp host p2 host cm eq 2000
+Permit ICMP host c6 host cm
+Permit tcp host c8 host cm eq 80
+Permit tcp host ed host cm eq 80
+interface fa0/0
+ ip access-group POLICY3  in
+end
+
+-pc cna ping ping , ssh telnet cm
+pc can ping http cm2
+-p1 can ping cm
+- p2 can ping sccp cm
+========================================TASK 6======================
+
+Network  service 
+step1 give ip and internet
+ conf t
+ ip route 0.0.0.0 0.0.0.0 192.168.108.2
+ int gi 2
+ ip address 192.168.108.8 255.255.255.0
+  no shut
+  int gi 1
+   ip address 192.168.101.8 255.255.255.0
+   no shut
+   
+ end
+ sh ip int brief
+ 
+ ===============================internet===============================
+ @vpnPH:
+config t
+int gi 1
+ip nat INSIDE
+int gi 2
+ip nat OUTSIDE
+int gi 3
+ip nat INSIDE
+no access-list 7
+access-list 7 permit 192.168.102.0 0.0.0.255
+access-list 7 permit 192.168.103.0 0.0.0.255
+ip nat inside source list 7 interface Gi 2 overload
+ip nat inside source static 192.168.102.69 192.168.108.69
+ip nat inside source static 192.168.103.88 192.168.108.88
+end
+  
+  
+==========TASK 7 CONFIGURE LINUX BUILDING===================================
+@b2
+sudo su
+ifconfig eth0 192.168.102.69 netmask 255.255.255.0 up
+route add default gw 192.168.102.8
+ping 8.8.8.8 
+ping 1.1.1.1
+
+@b01
+sudo su
+ifconfig eth0 192.168.108.88 netmask 255.255.255.0 up
+route add default gw 192.168.101.8
+ping 8.8.8.8 
+ping 1.1.1.1
+
+
+
+
+
+
+
+====================================================================
+cm is dns, http, https server
+cm2 is voip, sip, securesip server
+create a number/name policy
+R1: must learn network 1,2,3,4 
+config t
+ip routing
+ip route 10.1.4.4 255.255.255.252 10.1.1.2
+ip route 10.1.4.8  255.255.255.252 10.1.1.2
+ip route 10.1.1.8  255.255.255.252 10.1.1.2
+ip route 10.1.1.4  255.255.255.252 10.1.1.2
+
+TASK9: DEFAULT ROUTE FOR END DEVICES/HOST:
+P1:
+config t
+int e0/0
+
+===SCRIPTS====================
+conf t
+  dot11 ssid 21Jade
+        authentication open
+		authentication key-management wpa
+		wpa-psk ascii Cisc0123
+		guest-mode
+  int dot11Radio 0
+        no shut
+        encryption mode ciphers tkip
+        ssid 21Jade
+end		
+
+
+========CUCM===========================================
+conf t
+ voice service voip
+  allow-connections h323 to sip
+  allow-connections sip to h323
+  allow-connections sip to sip
+  supplementary-service h450.12
+ sip
+   bind control source-interface _____0/0
+   bind media source-interface _____0/0
+   registrar server expires max 600 min 60
+!
+ voice register global
+  mode cme
+  source-address 192.168._.1 port 5060
+  max-dn 12
+  max-pool 12
+  authenticate register
+  create profile sync
+ voice register dn 1
+   number ____
+   allow watch
+   name _______
+ voice register dn 2
+   number ___
+   allow watch
+   name _______
+  voice register pool 1
+    id mac ____.____.____
+    number 1 dn 1
+    dtmf-relay sip-notify
+    username ____ password ____
+    codec g711ulaw
+!
+  voice register pool 1
+    id mac 10:f6:05:86:1d:d9
+    number 1 dn 2
+    dtmf-relay sip-notify
+    username ____ password ____
+    codec g711ulaw
+!
+*******call other countries!!!********
+config t
+!
+dial-peer voice _ voip
+destination-pattern k..
+session protocol sipv2
+session target sip-server
+codec g711ulaw
+exit
+sip-ua
+sip-server ipv4:192.168.k.1
+CUCM-21#
+
+====================================================================
